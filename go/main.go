@@ -4,11 +4,8 @@ import (
 	"database/sql"
 	"html/template"
 	"net/http"
-	"os"
 	"sort"
 	"strconv"
-
-	_ "net/http/pprof"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -18,13 +15,6 @@ var db *sql.DB
 
 var memcandidates []Candidate
 var allPartyName []string
-
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
 
 func main() {
 	db, _ = sql.Open("mysql", "root:ishocon@unix(/var/run/mysqld/mysqld.sock)/ishocon2")
@@ -132,11 +122,9 @@ func main() {
 
 	// GET /vote
 	r.GET("/vote", func(c *gin.Context) {
-		candidates := getAllCandidate()
-
 		r.SetHTMLTemplate(template.Must(template.ParseFiles(layout, "templates/vote.tmpl")))
 		c.HTML(http.StatusOK, "base", gin.H{
-			"candidates": candidates,
+			"candidates": memcandidates,
 			"message":    "",
 		})
 	})
@@ -236,11 +224,6 @@ func main() {
 			db.Exec("insert into keyword values (%d, '一番最初に目に入った名前だったから', 0)", i)
 			db.Exec("insert into keyword values (%d, '顔が好み', 0)", i)
 		}
-
-		// for i := 1; i <= 30; i++ {
-		// 	db.Exec("insert into votes values (?, 0)", i)
-		// }
-
 		c.String(http.StatusOK, "Finish")
 	})
 

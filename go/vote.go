@@ -16,17 +16,12 @@ func getVoteCountByCandidateID(candidateID int) (count int) {
 }
 
 func getUserVotedCount(userID int) (count int) {
-	// row := db.QueryRow("SELECT COUNT(*) AS count FROM votes WHERE user_id =  ?", userID)
 	row := db.QueryRow("SELECT voted AS count FROM users WHERE id =  ?", userID)
 	row.Scan(&count)
 	return
 }
 
 func createVote(voteCount int, userID int, candidateID int, keyword string) {
-	// var args []string
-	// for i := 1; i <= voteCount; i++ {
-	// 	args = append(args, fmt.Sprintf("(%d, %d, '%s')", userID, candidateID, keyword))
-	// }
 	db.Exec("update votes set vote_count = vote_count + ? where candidate_id = ?", voteCount, candidateID)
 	db.Exec("UPDATE users set voted = voted + ? where id = ?", voteCount, userID)
 	db.Exec("UPDATE keyword set count = count + ? where candidate_id = ? and keyword = ?", voteCount, candidateID, keyword)
