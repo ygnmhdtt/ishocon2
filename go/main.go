@@ -171,7 +171,6 @@ func main() {
 	})
 
 	r.GET("/initialize", func(c *gin.Context) {
-		db.Exec("DELETE FROM votes")
 		memcandidates = []Candidate{}
 		memcandidates = append(memcandidates, Candidate{1, "佐藤 一郎", "夢実現党", "男"})
 		memcandidates = append(memcandidates, Candidate{2, "佐藤 次郎", "国民10人大活躍党", "女"})
@@ -203,7 +202,43 @@ func main() {
 		memcandidates = append(memcandidates, Candidate{28, "伊藤 三郎", "国民平和党", "女"})
 		memcandidates = append(memcandidates, Candidate{29, "伊藤 四郎", "国民10人大活躍党", "男"})
 		memcandidates = append(memcandidates, Candidate{30, "伊藤 五郎", "国民元気党", "男"})
+
 		allPartyName = []string{"夢実現党", "国民10人大活躍党", "国民元気党", "国民平和党"}
+
+		db.Exec("update votes set vote_count = 0")
+		db.Exec("update users set voted = 0")
+		db.Exec("DELETE FROM keyword")
+
+		for i := 1; i <= 30; i++ {
+			db.Exec("insert into keyword values (%d, '自分でもなぜか分からない', 0)", i)
+			db.Exec("insert into keyword values (%d, '教えてたくない', 0)", i)
+			db.Exec("insert into keyword values (%d, '他にまともな候補者がいないため', 0)", i)
+			db.Exec("insert into keyword values (%d, '自分の所属する政党の候補者だったから', 0)", i)
+			db.Exec("insert into keyword values (%d, '誰もが人間らしく生きられる社会をめざしているため', 0)", i)
+			db.Exec("insert into keyword values (%d, '税金を無駄遣いしてくれそうだから', 0)", i)
+			db.Exec("insert into keyword values (%d, '親戚と顔が似ていたから', 0)", i)
+			db.Exec("insert into keyword values (%d, '全候補者について、学歴や経歴は見ず、政策や演説だけで判断した結果、最も自分が描いていた社会に近かったから', 0)", i)
+			db.Exec("insert into keyword values (%d, '政策を吟味した結果。あの党の政策は反対だと感じたため、そこに対抗しうる政党を選んだ', 0)", i)
+			db.Exec("insert into keyword values (%d, '政権交代して欲しかったため', 0)", i)
+			db.Exec("insert into keyword values (%d, '若干極端な選択だが、この様な声があるのは悪い事ではない。他に良い立候補者がいない。個人的には、左寄りが必要。世界的に見て「ナショナリズム」が台頭しているためこの国も染まってしまう前に左寄りへ。でも極端に左なのは絶対に嫌だ', 0)", i)
+			db.Exec("insert into keyword values (%d, '誠実さ', 0)", i)
+			db.Exec("insert into keyword values (%d, '声に惹かれた', 0)", i)
+			db.Exec("insert into keyword values (%d, '実際にお会いする機会があった際、若い世代の問題に取り組む姿勢があり、また質問に誠実に答えてくれる印象を受けたから', 0)", i)
+			db.Exec("insert into keyword values (%d, '女性の輝く社会を実現しようと公約を掲げていたため', 0)", i)
+			db.Exec("insert into keyword values (%d, '私と名前が同じだったから', 0)", i)
+			db.Exec("insert into keyword values (%d, '経歴', 0)", i)
+			db.Exec("insert into keyword values (%d, 'ノーコメント', 0)", i)
+			db.Exec("insert into keyword values (%d, '若手で、また、働く環境や貧困について真剣に考えてくれているように感じたから', 0)", i)
+			db.Exec("insert into keyword values (%d, '若いから', 0)", i)
+			db.Exec("insert into keyword values (%d, '愛に対する考え方', 0)", i)
+			db.Exec("insert into keyword values (%d, '気分', 0)", i)
+			db.Exec("insert into keyword values (%d, '一番最初に目に入った名前だったから', 0)", i)
+			db.Exec("insert into keyword values (%d, '顔が好み', 0)", i)
+		}
+
+		// for i := 1; i <= 30; i++ {
+		// 	db.Exec("insert into votes values (?, 0)", i)
+		// }
 
 		c.String(http.StatusOK, "Finish")
 	})

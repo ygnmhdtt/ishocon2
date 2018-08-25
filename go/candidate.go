@@ -65,9 +65,8 @@ func getElectionResult() (result []CandidateElectionResult) {
 		SELECT c.id, c.name, c.political_party, c.sex, IFNULL(v.count, 0)
 		FROM candidates AS c
 		LEFT OUTER JOIN
-	  	(SELECT candidate_id, COUNT(*) AS count
-	  	FROM votes
-	  	GROUP BY candidate_id) AS v
+	  	(SELECT candidate_id, vote_count AS count
+	  	FROM votes) AS v
 		ON c.id = v.candidate_id
 		ORDER BY v.count DESC`)
 	if err != nil {
