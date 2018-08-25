@@ -27,21 +27,6 @@ type PartyElectionResult struct {
 
 func getAllCandidate() (candidates []Candidate) {
 	return memcandidates
-	// rows, err := db.Query("SELECT * FROM candidates")
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// defer rows.Close()
-
-	// for rows.Next() {
-	// 	c := Candidate{}
-	// 	err = rows.Scan(&c.ID, &c.Name, &c.PoliticalParty, &c.Sex)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	candidates = append(candidates, c)
-	// }
-	// return
 }
 
 func getCandidate(candidateID int) (c Candidate, err error) {
@@ -51,9 +36,6 @@ func getCandidate(candidateID int) (c Candidate, err error) {
 		}
 	}
 	return c, errors.New("cand not found")
-	// row := db.QueryRow("SELECT * FROM candidates WHERE id = ?", candidateID)
-	// err = row.Scan(&c.ID, &c.Name, &c.PoliticalParty, &c.Sex)
-	// return
 }
 
 func getCandidateByName(name string) (c Candidate, err error) {
@@ -63,28 +45,10 @@ func getCandidateByName(name string) (c Candidate, err error) {
 		}
 	}
 	return c, errors.New("cand not found")
-	// row := db.QueryRow("SELECT * FROM candidates WHERE name = ?", name)
-	// err = row.Scan(&c.ID, &c.Name, &c.PoliticalParty, &c.Sex)
-	// return
 }
 
 func getAllPartyName() (partyNames []string) {
 	return allPartyName
-	// rows, err := db.Query("SELECT political_party FROM candidates GROUP BY political_party")
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// defer rows.Close()
-
-	// for rows.Next() {
-	// 	var name string
-	// 	err = rows.Scan(&name)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	partyNames = append(partyNames, name)
-	// }
-	// return
 }
 
 func getCandidatesByPoliticalParty(party string) (candidates []Candidate) {
@@ -94,21 +58,6 @@ func getCandidatesByPoliticalParty(party string) (candidates []Candidate) {
 		}
 	}
 	return candidates
-	// rows, err := db.Query("SELECT * FROM candidates WHERE political_party = ?", party)
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-	// defer rows.Close()
-
-	// for rows.Next() {
-	// 	c := Candidate{}
-	// 	err = rows.Scan(&c.ID, &c.Name, &c.PoliticalParty, &c.Sex)
-	// 	if err != nil {
-	// 		panic(err.Error())
-	// 	}
-	// 	candidates = append(candidates, c)
-	// }
-	// return
 }
 
 func getElectionResult() (result []CandidateElectionResult) {

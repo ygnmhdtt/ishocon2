@@ -10,7 +10,6 @@ import (
 
 	_ "net/http/pprof"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -28,22 +27,12 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-	// database setting
-	user := getEnv("ISHOCON2_DB_USER", "ishocon")
-	pass := getEnv("ISHOCON2_DB_PASSWORD", "ishocon")
-	dbname := getEnv("ISHOCON2_DB_NAME", "ishocon2")
-	db, _ = sql.Open("mysql", user+":"+pass+"@/"+dbname)
-	db.SetMaxIdleConns(5)
+	db, _ = sql.Open("mysql", "ishocon:ishocon@unix(/var/run/mysqld/mysqld.sock)/ishocon2")
+	db.SetMaxIdleConns(50)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
-	// r.Use(static.Serve("/css", static.LocalFile("public/css", true)))
 	layout := "templates/layout.tmpl"
-
-	// session store
-	store := sessions.NewCookieStore([]byte("mysession"))
-	store.Options(sessions.Options{HttpOnly: true})
-	r.Use(sessions.Sessions("showwin_happy", store))
 
 	// GET /
 	r.GET("/", func(c *gin.Context) {
