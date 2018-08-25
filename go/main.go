@@ -27,10 +27,11 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-	db, _ = sql.Open("mysql", "ishocon:ishocon@unix(/var/run/mysqld/mysqld.sock)/ishocon2")
-	db.SetMaxIdleConns(50)
+	db, _ = sql.Open("mysql", "root:ishocon@unix(/var/run/mysqld/mysqld.sock)/ishocon2")
+	db.SetMaxIdleConns(100)
 
 	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.DebugMode)
 	r := gin.Default()
 	layout := "templates/layout.tmpl"
 
