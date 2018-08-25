@@ -35,7 +35,7 @@ func main() {
 	db, _ = sql.Open("mysql", user+":"+pass+"@/"+dbname)
 	db.SetMaxIdleConns(5)
 
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	// r.Use(static.Serve("/css", static.LocalFile("public/css", true)))
 	layout := "templates/layout.tmpl"
@@ -183,6 +183,7 @@ func main() {
 
 	r.GET("/initialize", func(c *gin.Context) {
 		db.Exec("DELETE FROM votes")
+		memcandidates = []Candidate{}
 		memcandidates = append(memcandidates, Candidate{1, "佐藤 一郎", "夢実現党", "男"})
 		memcandidates = append(memcandidates, Candidate{2, "佐藤 次郎", "国民10人大活躍党", "女"})
 		memcandidates = append(memcandidates, Candidate{3, "佐藤 三郎", "国民10人大活躍党", "女"})
